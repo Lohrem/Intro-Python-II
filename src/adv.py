@@ -38,35 +38,32 @@ room['treasure'].s_to = room['narrow']
 # Main
 #
 player_name = input('What is your name? ')
-# Make a new player object that is currently in the 'outside' room.
 print(f'Hello, {player_name}')
-my_player = Player(player_name, Room("outside", room['outside'])) #Room() shouldn't be just a string it should be a Room Obj
+my_player = Player(player_name, room['outside'])
 
 # Write a loop that:
 #
 # * Prints the current room name
-# print(my_player.player_room.room_name)
-
 # * Prints the current description (the textwrap module might be useful here).
-print(my_player.player_room.room_desc)
 # * Waits for user input and decides what to do.
-direction = input('In which direction would you like to move? ').lower().strip()
 # If the user enters a cardinal direction, attempt to move to the room there.
-if direction == 'n':
-    print('you moved north')
-elif direction == 'e':
-    print('you moved east')
-elif direction == 's':
-    print('you moved south')
-elif direction == 'w':
-    print('you moved west')
-elif direction == 'q':
-    print('the game will now end')
-else:
-    print('Invalid input, try N, E, S, W, or Q to quit the game')
-
-# Print an error message if the movement isn't allowed.
-#
 # If the user enters "q", quit the game.
-# class Adv:
-#     def __init__(self):
+# Print an error message if the movement isn't allowed.
+
+direction = input('In which direction would you like to move? ').lower().strip()
+print(f'{my_player.player_room}')
+
+directions = {'n': 'n_to', 's': 's_to', 'e': 'e_to', 'w': 'w_to'}
+
+while True:
+    print(f'{my_player.player_room} \n')
+
+    choice = input("Which way are you going? ")
+
+    direction = directions[choice]
+
+    try:
+        my_player.player_room = getattr(my_player.player_room, direction)
+
+    except AttributeError:
+        print("Sorry, you cannot go that way \n") 
